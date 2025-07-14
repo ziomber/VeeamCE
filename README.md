@@ -8,6 +8,7 @@ I'm interesting in only 3 statuses:
 * Success = 0
 * Warning = 1
 * Failed = 2
+
 Discovery rule create also one trigger for failed jobs as a High importance.
 
 ## Step 1
