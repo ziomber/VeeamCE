@@ -1,0 +1,29 @@
+zabbix_export:
+  version: '7.4'
+  template_groups:
+    - uuid: a571c0d144b14fd4a87a9d9b2aa9fcd6
+      name: Templates/Applications
+  templates:
+    - uuid: 7f07e096393946b2867ca98a59595350
+      template: 'Veeam CE'
+      name: 'Veeam CE'
+      groups:
+        - name: Templates/Applications
+      discovery_rules:
+        - uuid: b7912ac1585e468b808abb9bae533ee2
+          name: 'Backup jobs discovery'
+          key: veeam.discovery
+          delay: 1d
+          item_prototypes:
+            - uuid: 8ca7a17c319a4304a8a229567a65fed9
+              name: 'Backup job status [{#JOBNAME}]'
+              key: 'veeam.job.status["{#JOBNAME}"]'
+              delay: 1h
+              timeout: 30s
+              trigger_prototypes:
+                - uuid: ea57b33dafee4d3fafe017e3883f86c3
+                  expression: 'last(/Veeam CE/veeam.job.status["{#JOBNAME}"],#1)=2'
+                  name: 'Backup job [{#JOBNAME}] failed'
+                  priority: HIGH
+                  manual_close: 'YES'
+          timeout: 30s
